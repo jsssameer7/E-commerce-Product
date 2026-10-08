@@ -57,8 +57,6 @@ export const RecommendationModal: React.FC<RecommendationModalProps> = ({
     }
   }, [isOpen, selectedCategory, maxBudget, selectedPurpose]);
 
-  if (!isOpen) return null;
-
   // Smart AI Recommendation Engine scoring algorithm
   const recommendationResults = useMemo(() => {
     const safeProducts = Array.isArray(products) ? products : [];
@@ -139,6 +137,8 @@ export const RecommendationModal: React.FC<RecommendationModalProps> = ({
   }, [products, selectedCategory, maxBudget, selectedPurpose]);
 
   const { winner, winnerScore, runnerUp } = recommendationResults;
+
+  if (!isOpen) return null;
 
   return (
     <div className="fixed inset-0 z-50 overflow-y-auto bg-black/75 backdrop-blur-sm flex items-center justify-center p-2 sm:p-4 animate-fade-in">
