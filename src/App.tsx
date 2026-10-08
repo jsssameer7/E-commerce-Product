@@ -3,7 +3,7 @@ import { Product, FilterState, CartItem, Coupon, Order, Review, User } from './t
 import { INITIAL_PRODUCTS } from './data/products';
 import { INITIAL_REVIEWS } from './data/reviews';
 import { DEMO_USERS } from './data/users';
-import { getProductsFromSupabase, createOrderInSupabase, seedProductsToSupabase, isSupabaseConfigured } from './lib/supabase';
+import { getProductsFromSupabase, createOrderInSupabase, isSupabaseConfigured } from './lib/supabase';
 import { Header } from './components/Header';
 import { ProductCard } from './components/ProductCard';
 import { FilterSidebar } from './components/FilterSidebar';
