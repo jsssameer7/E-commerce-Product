@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Order, User } from '../types';
-import { X, Package, CheckCircle2, Truck, Clock, Printer, User as UserIcon } from 'lucide-react';
+import { X, Package, CheckCircle2, Truck, Clock, Printer, User as UserIcon, ShieldCheck } from 'lucide-react';
 import { formatPrice } from '../utils/formatCurrency';
 
 interface UserOrdersModalProps {
@@ -16,17 +16,26 @@ export const UserOrdersModal: React.FC<UserOrdersModalProps> = ({
   orders,
   currentUser,
 }) => {
+  // Admin view filter toggle
+  const [adminViewMode, setAdminViewMode] = useState<'my-orders' | 'all-orders'>('my-orders');
+
   if (!isOpen) return null;
 
-  // Filter orders so users only see their own purchases (Admins can view all)
+  // Strict Order Isolation logic
   const userOrders = orders.filter((order) => {
     if (!currentUser) return false;
-    if (currentUser.role === 'admin') return true; // Admin views all customer orders
-    return (
+
+    const isOwnOrder = 
       order.userId === currentUser.id ||
-      order.userEmail?.toLowerCase() === currentUser.email.toLowerCase() ||
-      order.shippingAddress?.email?.toLowerCase() === currentUser.email.toLowerCase()
-    );
+      (order.userEmail && order.userEmail.toLowerCase() === currentUser.email.toLowerCase()) ||
+      (order.shippingAddress?.email && order.shippingAddress.email.toLowerCase() === currentUser.email.toLowerCase());
+
+    if (currentUser.role === 'admin') {
+      return adminViewMode === 'all-orders' ? true : isOwnOrder;
+    }
+
+    // Regular customers see ONLY their own orders
+    return isOwnOrder;
   });
 
   return (
@@ -41,7 +50,7 @@ export const UserOrdersModal: React.FC<UserOrdersModalProps> = ({
               <h2 className="text-base font-extrabold text-gray-900 dark:text-white">Order History & Live Tracking</h2>
               {currentUser && (
                 <p className="text-[11px] text-gray-500 dark:text-gray-400">
-                  Showing orders for: <strong className="text-blue-600 dark:text-blue-400">{currentUser.name} ({currentUser.email})</strong>
+                  Account: <strong className="text-blue-600 dark:text-blue-400">{currentUser.name} ({currentUser.email})</strong>
                 </p>
               )}
             </div>
@@ -54,6 +63,38 @@ export const UserOrdersModal: React.FC<UserOrdersModalProps> = ({
           </button>
         </div>
 
+        {/* Admin Filter Bar if logged in as Admin */}
+        {currentUser?.role === 'admin' && (
+          <div className="px-6 py-2.5 bg-amber-50 dark:bg-amber-950/40 border-b border-amber-200 dark:border-amber-900/50 flex flex-wrap items-center justify-between text-xs gap-2">
+            <div className="flex items-center gap-1.5 text-amber-800 dark:text-amber-200 font-bold">
+              <ShieldCheck className="w-4 h-4 text-amber-600" />
+              <span>Admin Order Privileges Active</span>
+            </div>
+            <div className="inline-flex rounded-xl bg-white dark:bg-gray-800 p-1 border border-amber-200 dark:border-amber-900">
+              <button
+                onClick={() => setAdminViewMode('my-orders')}
+                className={`px-3 py-1 rounded-lg font-extrabold transition-colors ${
+                  adminViewMode === 'my-orders'
+                    ? 'bg-blue-600 text-white shadow-sm'
+                    : 'text-gray-600 dark:text-gray-400 hover:text-gray-900'
+                }`}
+              >
+                My Personal Orders Only
+              </button>
+              <button
+                onClick={() => setAdminViewMode('all-orders')}
+                className={`px-3 py-1 rounded-lg font-extrabold transition-colors ${
+                  adminViewMode === 'all-orders'
+                    ? 'bg-blue-600 text-white shadow-sm'
+                    : 'text-gray-600 dark:text-gray-400 hover:text-gray-900'
+                }`}
+              >
+                All Customer Orders ({orders.length})
+              </button>
+            </div>
+          </div>
+        )}
+
         {/* Orders list */}
         <div className="flex-1 overflow-y-auto p-6 space-y-6">
           {!currentUser ? (
@@ -65,8 +106,12 @@ export const UserOrdersModal: React.FC<UserOrdersModalProps> = ({
           ) : userOrders.length === 0 ? (
             <div className="text-center py-16">
               <Package className="w-12 h-12 text-gray-300 dark:text-gray-700 mx-auto mb-2" />
-              <p className="text-sm font-bold text-gray-600 dark:text-gray-300">No Orders Placed Yet for {currentUser.name}</p>
-              <p className="text-xs text-gray-400 mt-1">When you purchase electronic products, your GST receipts and tracking will show here.</p>
+              <p className="text-sm font-bold text-gray-600 dark:text-gray-300">
+                No Personal Orders Placed Yet for {currentUser.name}
+              </p>
+              <p className="text-xs text-gray-400 mt-1">
+                When you purchase electronic products, your private GST receipts and tracking will show here.
+              </p>
             </div>
           ) : (
             userOrders.map((order) => (
@@ -81,6 +126,11 @@ export const UserOrdersModal: React.FC<UserOrdersModalProps> = ({
                       {order.id}
                     </span>
                     <span className="text-xs text-gray-400 ml-3">Placed on {order.date}</span>
+                    {order.customerName && (
+                      <span className="text-xs text-gray-500 ml-3 font-semibold">
+                        Customer: {order.customerName} ({order.userEmail})
+                      </span>
+                    )}
                   </div>
                   <div className="flex items-center gap-2">
                     <span className="text-xs font-extrabold text-gray-900 dark:text-white">
@@ -125,10 +175,10 @@ export const UserOrdersModal: React.FC<UserOrdersModalProps> = ({
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-2 border-t border-gray-200 dark:border-gray-700">
                   {order.items.map(({ product, quantity }) => (
                     <div key={product.id} className="flex items-center gap-3 bg-white dark:bg-gray-900 p-2 rounded-xl border border-gray-100 dark:border-gray-800">
-                      <img src={product.image} alt="" className="w-10 h-10 object-contain" />
-                      <div className="text-xs">
-                        <p className="font-bold text-gray-900 dark:text-white truncate max-w-[180px]">{product.name}</p>
-                        <p className="text-gray-500 font-medium">Qty: {quantity} • {formatPrice(product.price)}</p>
+                      <img src={product.image} alt="" className="w-10 h-10 object-contain p-1 bg-white rounded" />
+                      <div>
+                        <p className="text-xs font-bold text-gray-900 dark:text-white">{product.name}</p>
+                        <p className="text-[11px] text-gray-500">Qty: {quantity} • {formatPrice(product.price)}</p>
                       </div>
                     </div>
                   ))}

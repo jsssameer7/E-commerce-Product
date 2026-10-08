@@ -18,7 +18,7 @@ export const AdminPanelModal: React.FC<AdminPanelModalProps> = ({
   onAddProduct,
   onUpdateStock,
 }) => {
-  const [showAddForm, setShowAddForm] = useState(false);
+  const [showAddForm, setShowAddForm] = useState(true);
   const [newProductName, setNewProductName] = useState('');
   const [newProductBrand, setNewProductBrand] = useState('');
   const [newProductCategory, setNewProductCategory] = useState<CategoryType>('smartphones');
