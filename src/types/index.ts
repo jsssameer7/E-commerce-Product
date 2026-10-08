@@ -87,6 +87,9 @@ export interface ShippingAddress {
 
 export interface Order {
   id: string;
+  userId?: string;
+  userEmail?: string;
+  customerName?: string;
   date: string;
   items: CartItem[];
   subtotal: number;

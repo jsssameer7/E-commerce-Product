@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { CartItem, Coupon, Order, ShippingAddress } from '../types';
+import { CartItem, Coupon, Order, ShippingAddress, User } from '../types';
 import { formatPrice } from '../utils/formatCurrency';
 import { 
   X, 
@@ -19,6 +19,7 @@ interface CheckoutModalProps {
   onClose: () => void;
   cartItems: CartItem[];
   appliedCoupon: Coupon | null;
+  currentUser?: User | null;
   onOrderPlaced: (order: Order) => void;
   onClearCart: () => void;
 }
@@ -28,6 +29,7 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
   onClose,
   cartItems,
   appliedCoupon,
+  currentUser,
   onOrderPlaced,
   onClearCart,
 }) => {
@@ -84,6 +86,9 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
 
     const newOrder: Order = {
       id: 'ORD-IN-' + Math.floor(100000 + Math.random() * 900000),
+      userId: currentUser?.id,
+      userEmail: currentUser?.email || address.email,
+      customerName: currentUser?.name || address.fullName,
       date: new Date().toISOString().split('T')[0],
       items: [...cartItems],
       subtotal,

@@ -1,20 +1,33 @@
 import React from 'react';
-import { Order } from '../types';
-import { X, Package, CheckCircle2, Truck, Clock, Printer } from 'lucide-react';
+import { Order, User } from '../types';
+import { X, Package, CheckCircle2, Truck, Clock, Printer, User as UserIcon } from 'lucide-react';
 import { formatPrice } from '../utils/formatCurrency';
 
 interface UserOrdersModalProps {
   isOpen: boolean;
   onClose: () => void;
   orders: Order[];
+  currentUser?: User | null;
 }
 
 export const UserOrdersModal: React.FC<UserOrdersModalProps> = ({
   isOpen,
   onClose,
   orders,
+  currentUser,
 }) => {
   if (!isOpen) return null;
+
+  // Filter orders so users only see their own purchases (Admins can view all)
+  const userOrders = orders.filter((order) => {
+    if (!currentUser) return false;
+    if (currentUser.role === 'admin') return true; // Admin views all customer orders
+    return (
+      order.userId === currentUser.id ||
+      order.userEmail?.toLowerCase() === currentUser.email.toLowerCase() ||
+      order.shippingAddress?.email?.toLowerCase() === currentUser.email.toLowerCase()
+    );
+  });
 
   return (
     <div className="fixed inset-0 z-50 overflow-y-auto bg-black/75 backdrop-blur-sm flex items-center justify-center p-2 sm:p-4 animate-fade-in">
@@ -24,7 +37,14 @@ export const UserOrdersModal: React.FC<UserOrdersModalProps> = ({
         <div className="px-6 py-4 bg-gray-50 dark:bg-gray-800/80 border-b border-gray-200 dark:border-gray-800 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Package className="w-5 h-5 text-blue-600" />
-            <h2 className="text-base font-extrabold text-gray-900 dark:text-white">Order History & Live Tracking</h2>
+            <div>
+              <h2 className="text-base font-extrabold text-gray-900 dark:text-white">Order History & Live Tracking</h2>
+              {currentUser && (
+                <p className="text-[11px] text-gray-500 dark:text-gray-400">
+                  Showing orders for: <strong className="text-blue-600 dark:text-blue-400">{currentUser.name} ({currentUser.email})</strong>
+                </p>
+              )}
+            </div>
           </div>
           <button
             onClick={onClose}
@@ -36,14 +56,20 @@ export const UserOrdersModal: React.FC<UserOrdersModalProps> = ({
 
         {/* Orders list */}
         <div className="flex-1 overflow-y-auto p-6 space-y-6">
-          {orders.length === 0 ? (
+          {!currentUser ? (
+            <div className="text-center py-16">
+              <UserIcon className="w-12 h-12 text-gray-300 dark:text-gray-700 mx-auto mb-2" />
+              <p className="text-sm font-bold text-gray-600 dark:text-gray-300">Please Sign In</p>
+              <p className="text-xs text-gray-400 mt-1">Sign in with your customer account to view your order history.</p>
+            </div>
+          ) : userOrders.length === 0 ? (
             <div className="text-center py-16">
               <Package className="w-12 h-12 text-gray-300 dark:text-gray-700 mx-auto mb-2" />
-              <p className="text-sm font-bold text-gray-600 dark:text-gray-300">No Orders Placed Yet</p>
+              <p className="text-sm font-bold text-gray-600 dark:text-gray-300">No Orders Placed Yet for {currentUser.name}</p>
               <p className="text-xs text-gray-400 mt-1">When you purchase electronic products, your GST receipts and tracking will show here.</p>
             </div>
           ) : (
-            orders.map((order) => (
+            userOrders.map((order) => (
               <div
                 key={order.id}
                 className="bg-gray-50 dark:bg-gray-800/40 rounded-2xl border border-gray-200 dark:border-gray-700 p-5 space-y-4"

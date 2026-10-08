@@ -552,6 +552,7 @@ export const App: React.FC = () => {
         onClose={() => setIsCheckoutModalOpen(false)}
         cartItems={cartItems}
         appliedCoupon={appliedCoupon}
+        currentUser={currentUser}
         onOrderPlaced={(newOrder) => {
           setOrders((prev) => [newOrder, ...prev]);
           if (isSupabaseConfigured) {
@@ -566,6 +567,7 @@ export const App: React.FC = () => {
         isOpen={isOrdersModalOpen}
         onClose={() => setIsOrdersModalOpen(false)}
         orders={orders}
+        currentUser={currentUser}
       />
 
       <AdminPanelModal
