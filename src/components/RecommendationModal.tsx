@@ -61,31 +61,32 @@ export const RecommendationModal: React.FC<RecommendationModalProps> = ({
 
   // Smart AI Recommendation Engine scoring algorithm
   const recommendationResults = useMemo(() => {
-    if (!products || products.length === 0) {
+    const safeProducts = Array.isArray(products) ? products : [];
+    if (safeProducts.length === 0) {
       return { winner: null, winnerScore: 0, runnerUp: null };
     }
 
     // Step 1: Filter by category
     let pool = selectedCategory === 'all' 
-      ? products 
-      : products.filter((p) => p.category === selectedCategory);
+      ? safeProducts 
+      : safeProducts.filter((p) => p && p.category === selectedCategory);
 
-    if (pool.length === 0) pool = products;
+    if (pool.length === 0) pool = safeProducts;
 
     // Step 2: Filter by budget if possible
-    let withinBudget = pool.filter((p) => p.price <= maxBudget);
+    let withinBudget = pool.filter((p) => p && typeof p.price === 'number' && p.price <= maxBudget);
     if (withinBudget.length === 0) {
       // If budget too tight, pick closest available product in pool
       withinBudget = pool;
     }
 
     // Extract search keywords from selected purpose
-    const purposeKeywords = selectedPurpose
+    const purposeKeywords = (selectedPurpose || '')
       .toLowerCase()
       .split(' ')
       .filter((w) => w.length > 2 && w !== '&' && w !== 'and');
 
-    // Step 3: Score each candidate product
+    // Step 3: Score each candidate product safely
     const scored = withinBudget.map((product) => {
       let score = 50; // Base score
 
@@ -95,23 +96,28 @@ export const RecommendationModal: React.FC<RecommendationModalProps> = ({
       score += (product.rating || 4.5) * 2;
 
       // Budget Fit (higher score if closer to maxBudget without exceeding)
-      if (product.price <= maxBudget) {
-        const ratio = product.price / maxBudget;
+      const price = product.price || 0;
+      if (price <= maxBudget && maxBudget > 0) {
+        const ratio = price / maxBudget;
         score += 15 * ratio;
       } else {
         score -= 10; // Slight penalty for exceeding budget
       }
 
-      // Keyword match across use cases, highlights, description & specs
+      // Keyword match across use cases, highlights, description & specs safely
       if (selectedPurpose !== 'All Use Cases & Daily Use') {
+        const recCases = Array.isArray(product.recommendedUseCases) ? product.recommendedUseCases : [];
+        const highlights = Array.isArray(product.highlights) ? product.highlights : [];
+        const specsVals = product.specs ? Object.values(product.specs) : [];
+
         const textToSearch = [
-          ...product.recommendedUseCases,
-          ...product.highlights,
-          product.description,
-          product.name,
-          product.category,
-          ...Object.values(product.specs || {})
-        ].join(' ').toLowerCase();
+          ...recCases,
+          ...highlights,
+          product.description || '',
+          product.name || '',
+          product.category || '',
+          ...specsVals
+        ].filter(Boolean).join(' ').toLowerCase();
 
         const matchCount = purposeKeywords.filter((kw) => textToSearch.includes(kw)).length;
         if (matchCount > 0) {
@@ -125,9 +131,9 @@ export const RecommendationModal: React.FC<RecommendationModalProps> = ({
     // Sort descending by score
     scored.sort((a, b) => b.matchScore - a.matchScore);
 
-    const winner = scored[0]?.product || products[0];
+    const winner = scored[0]?.product || safeProducts[0] || null;
     const winnerScore = scored[0]?.matchScore || 95;
-    const runnerUp = scored[1]?.product || (products.length > 1 ? products[1] : null);
+    const runnerUp = scored[1]?.product || (safeProducts.length > 1 ? safeProducts[1] : null);
 
     return { winner, winnerScore, runnerUp };
   }, [products, selectedCategory, maxBudget, selectedPurpose]);
@@ -300,21 +306,21 @@ export const RecommendationModal: React.FC<RecommendationModalProps> = ({
                     <div className="grid grid-cols-3 gap-2 py-1">
                       <div className="p-2 bg-white dark:bg-gray-800/80 rounded-xl border border-gray-200 dark:border-gray-700 text-center">
                         <p className="text-[10px] text-gray-400 font-bold uppercase">Performance</p>
-                        <p className="text-sm font-black text-blue-600 dark:text-blue-400">{winner.performanceScore}/10</p>
+                        <p className="text-sm font-black text-blue-600 dark:text-blue-400">{winner.performanceScore || 9.5}/10</p>
                       </div>
                       <div className="p-2 bg-white dark:bg-gray-800/80 rounded-xl border border-gray-200 dark:border-gray-700 text-center">
                         <p className="text-[10px] text-gray-400 font-bold uppercase">Features</p>
-                        <p className="text-sm font-black text-indigo-600 dark:text-indigo-400">{winner.featuresScore}/10</p>
+                        <p className="text-sm font-black text-indigo-600 dark:text-indigo-400">{winner.featuresScore || 9.2}/10</p>
                       </div>
                       <div className="p-2 bg-white dark:bg-gray-800/80 rounded-xl border border-gray-200 dark:border-gray-700 text-center">
                         <p className="text-[10px] text-gray-400 font-bold uppercase">Value Score</p>
-                        <p className="text-sm font-black text-emerald-600 dark:text-emerald-400">{winner.valueScore}/10</p>
+                        <p className="text-sm font-black text-emerald-600 dark:text-emerald-400">{winner.valueScore || 9.3}/10</p>
                       </div>
                     </div>
 
                     {/* AI Reasoning Text */}
                     <div className="p-3 bg-blue-100/70 dark:bg-blue-950/70 rounded-2xl border border-blue-200 dark:border-blue-900 text-xs text-blue-900 dark:text-blue-200 leading-relaxed font-medium">
-                      🤖 <strong>SmartElectro AI Analysis:</strong> "{winner.name} is selected as the top recommendation for <strong>{selectedPurpose}</strong> because it provides the best performance score ({winner.performanceScore}/10), value rating ({winner.valueScore}/10), and sits within your {formatPrice(maxBudget)} budget."
+                      🤖 <strong>SmartElectro AI Analysis:</strong> "{winner.name} is selected as the top recommendation for <strong>{selectedPurpose}</strong> because it provides the best performance score ({winner.performanceScore || 9.5}/10), value rating ({winner.valueScore || 9.3}/10), and sits within your {formatPrice(maxBudget)} budget."
                     </div>
 
                     {/* Action Buttons */}
