@@ -2,7 +2,6 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { Product, FilterState, CartItem, Coupon, Order, Review, User } from './types';
 import { INITIAL_PRODUCTS } from './data/products';
 import { INITIAL_REVIEWS } from './data/reviews';
-import { DEMO_USERS } from './data/users';
 import { getProductsFromSupabase, createOrderInSupabase, createProductInSupabase, isSupabaseConfigured } from './lib/supabase';
 import { Header } from './components/Header';
 import { ProductCard } from './components/ProductCard';
@@ -11,7 +10,7 @@ import { CompareBar } from './components/CompareBar';
 import { CompareModal } from './components/CompareModal';
 import { ProductDetailModal } from './components/ProductDetailModal';
 import { RecommendationModal } from './components/RecommendationModal';
-import { AuthModal } from './components/AuthModal';
+import { AuthModal, AuthContent } from './components/AuthModal';
 import { CartDrawer } from './components/CartDrawer';
 import { CheckoutModal } from './components/CheckoutModal';
 import { WishlistDrawer } from './components/WishlistDrawer';
@@ -19,7 +18,7 @@ import { UserOrdersModal } from './components/UserOrdersModal';
 import { AdminPanelModal } from './components/AdminPanelModal';
 import { OnlineDealsComparisonModal } from './components/OnlineDealsComparisonModal';
 import { Footer } from './components/Footer';
-import { Sparkles, SlidersHorizontal, CheckCircle2, Grid, List, Bot } from 'lucide-react';
+import { Sparkles, SlidersHorizontal, CheckCircle2, Grid, List, Bot, Sun, Moon, Scale, Tag, Trophy } from 'lucide-react';
 
 export const App: React.FC = () => {
   // Dark Mode State
@@ -110,10 +109,10 @@ export const App: React.FC = () => {
     localStorage.setItem('electro_orders', JSON.stringify(orders));
   }, [orders]);
 
-  // User Session State
+  // User Session State (null by default so visitors MUST login or signup first)
   const [currentUser, setCurrentUser] = useState<User | null>(() => {
     const saved = localStorage.getItem('electro_user_session');
-    return saved ? JSON.parse(saved) : DEMO_USERS[0];
+    return saved ? JSON.parse(saved) : null;
   });
 
   useEffect(() => {
@@ -291,6 +290,85 @@ export const App: React.FC = () => {
       sortBy: 'featured',
     });
   };
+
+  // Mandatory Login / Sign Up Gate: When a user enters the website, they MUST login or signup first
+  if (!currentUser) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-indigo-950 to-gray-900 text-white flex flex-col justify-between p-4 sm:p-8 animate-fade-in">
+        {/* Top Navbar Header */}
+        <div className="max-w-7xl mx-auto w-full flex items-center justify-between py-4 border-b border-white/10">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-blue-600 to-indigo-500 flex items-center justify-center text-white font-extrabold text-xl shadow-lg shadow-blue-500/30">
+              <Scale className="w-5 h-5" />
+            </div>
+            <div>
+              <h1 className="text-xl font-black tracking-tight text-white">ElectroCompare</h1>
+              <p className="text-[10px] text-blue-300 font-extrabold uppercase tracking-wider">Shopping & Spec Portal</p>
+            </div>
+          </div>
+
+          <button
+            onClick={() => setDarkMode(!darkMode)}
+            className="p-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-white transition-colors"
+            title="Toggle theme"
+          >
+            {darkMode ? <Sun className="w-5 h-5 text-amber-400" /> : <Moon className="w-5 h-5 text-blue-300" />}
+          </button>
+        </div>
+
+        {/* Main Center Auth Container */}
+        <div className="max-w-5xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-8 my-8 items-center">
+          
+          {/* Left Side: Portal Welcome & Highlights */}
+          <div className="lg:col-span-6 space-y-6 text-left">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-500/20 border border-blue-400/30 text-blue-300 text-xs font-black uppercase tracking-wider">
+              <Sparkles className="w-4 h-4 text-amber-400 animate-bounce" /> Authentication Required
+            </div>
+
+            <h2 className="text-3xl sm:text-5xl font-black text-white leading-tight">
+              Sign In to Access Electronics Shopping Portal
+            </h2>
+
+            <p className="text-sm text-gray-300 leading-relaxed font-normal">
+              Compare prices across top Indian online sellers (<strong>Amazon, Flipkart, Reliance Digital, Croma</strong>). Evaluate specifications side-by-side and find the #1 best value deals.
+            </p>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
+              <div className="p-3.5 rounded-2xl bg-white/5 border border-white/10 space-y-1">
+                <div className="text-blue-400 font-extrabold text-xs uppercase tracking-wider flex items-center gap-1.5">
+                  <Tag className="w-4 h-4 text-blue-400" /> 4 Store Deal Comparison
+                </div>
+                <p className="text-xs text-gray-400">Live prices, savings & bank cashback offers ranked #1 to #4.</p>
+              </div>
+
+              <div className="p-3.5 rounded-2xl bg-white/5 border border-white/10 space-y-1">
+                <div className="text-indigo-400 font-extrabold text-xs uppercase tracking-wider flex items-center gap-1.5">
+                  <Trophy className="w-4 h-4 text-amber-400" /> Winner Rank Engine
+                </div>
+                <p className="text-xs text-gray-400">Automatic overall composite scoring matrix out of 10.</p>
+              </div>
+            </div>
+          </div>
+
+          {/* Right Side: Inline Auth Form Component */}
+          <div className="lg:col-span-6">
+            <AuthContent
+              onLoginSuccess={(loggedInUser) => {
+                setCurrentUser(loggedInUser);
+                showToast(`Welcome ${loggedInUser.name}!`);
+              }}
+            />
+          </div>
+
+        </div>
+
+        {/* Footer */}
+        <div className="text-center text-xs text-gray-400 py-4 border-t border-white/10">
+          © 2026 ElectroCompare Shopping Portal. All specifications & seller prices verified live.
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100 flex flex-col font-sans transition-colors">
