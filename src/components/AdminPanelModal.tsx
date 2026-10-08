@@ -236,6 +236,7 @@ export const AdminPanelModal: React.FC<AdminPanelModalProps> = ({
                   <th className="py-2">Category</th>
                   <th className="py-2">Price</th>
                   <th className="py-2">In Stock</th>
+                  <th className="py-2">Customer Status</th>
                   <th className="py-2 text-right">Adjust Stock</th>
                 </tr>
               </thead>
@@ -249,6 +250,12 @@ export const AdminPanelModal: React.FC<AdminPanelModalProps> = ({
                     <td className="py-2 capitalize text-gray-500">{p.category}</td>
                     <td className="py-2 font-mono font-bold text-blue-600">{formatPrice(p.price)}</td>
                     <td className="py-2 font-bold text-gray-800 dark:text-gray-200">{p.stock} units</td>
+                    <td className="py-2">
+                      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-emerald-100 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-400 border border-emerald-300/40">
+                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                        Live for Customers
+                      </span>
+                    </td>
                     <td className="py-2 text-right">
                       <div className="inline-flex items-center gap-1">
                         <button
