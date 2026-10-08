@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Product, Review } from '../types';
 import { formatPrice } from '../utils/formatCurrency';
+import { getSellerDeals } from '../utils/getSellerDeals';
 import { 
   X, 
   Star, 
@@ -9,7 +10,9 @@ import {
   SlidersHorizontal, 
   Truck, 
   ShieldCheck, 
-  RotateCcw
+  RotateCcw,
+  ExternalLink,
+  Building2
 } from 'lucide-react';
 
 interface ProductDetailModalProps {
@@ -37,7 +40,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
 }) => {
   const [selectedImage, setSelectedImage] = useState<string>('');
   const [quantity, setQuantity] = useState<number>(1);
-  const [activeTab, setActiveTab] = useState<'specs' | 'reviews' | 'shipping'>('specs');
+  const [activeTab, setActiveTab] = useState<'specs' | 'deals' | 'reviews'>('specs');
   const [zipCode, setZipCode] = useState<string>('');
   const [shippingEstimate, setShippingEstimate] = useState<string | null>(null);
 
@@ -293,6 +296,16 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                   Full Technical Specs
                 </button>
                 <button
+                  onClick={() => setActiveTab('deals')}
+                  className={`pb-2 text-xs font-bold uppercase tracking-wider transition-colors border-b-2 ${
+                    activeTab === 'deals'
+                      ? 'border-blue-600 text-blue-600 dark:text-blue-400'
+                      : 'border-transparent text-gray-500 hover:text-gray-800 dark:hover:text-gray-200'
+                  }`}
+                >
+                  🏷️ Top 4 Store Deals (Amazon/Flipkart)
+                </button>
+                <button
                   onClick={() => setActiveTab('reviews')}
                   className={`pb-2 text-xs font-bold uppercase tracking-wider transition-colors border-b-2 ${
                     activeTab === 'reviews'
@@ -321,6 +334,57 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                       ))}
                     </tbody>
                   </table>
+                </div>
+              )}
+
+              {/* Tab 2: Top 4 Online Store Deals */}
+              {activeTab === 'deals' && (
+                <div className="space-y-3 max-h-64 overflow-y-auto pr-2">
+                  <div className="p-2 bg-blue-50/80 dark:bg-blue-950/60 rounded-xl border border-blue-200 dark:border-blue-900 text-xs text-blue-900 dark:text-blue-200 font-bold flex items-center justify-between">
+                    <span>🏆 Store Price Comparison Engine</span>
+                    <span>Ranked #1 to #4</span>
+                  </div>
+                  {getSellerDeals(product).map((deal) => (
+                    <div
+                      key={deal.id}
+                      className={`p-3 rounded-xl border text-xs flex flex-wrap items-center justify-between gap-3 ${
+                        deal.isBestDeal
+                          ? 'bg-amber-500/10 border-amber-500/50 dark:bg-amber-950/30'
+                          : 'bg-gray-50 dark:bg-gray-800/50 border-gray-200 dark:border-gray-700'
+                      }`}
+                    >
+                      <div className="space-y-1">
+                        <div className="flex items-center gap-2">
+                          <span className={`px-2 py-0.5 rounded text-[10px] font-black ${deal.isBestDeal ? 'bg-amber-500 text-white' : 'bg-gray-700 text-white'}`}>
+                            RANK #{deal.rank}
+                          </span>
+                          <span className="font-extrabold text-gray-900 dark:text-white flex items-center gap-1">
+                            <Building2 className="w-3.5 h-3.5 text-blue-600" />
+                            {deal.storeName}
+                          </span>
+                          <span className="text-[10px] text-amber-500 font-bold">({deal.storeRating} ★)</span>
+                        </div>
+                        <p className="text-[11px] text-gray-600 dark:text-gray-300 font-medium">{deal.bankOffer}</p>
+                        <p className="text-[10px] text-emerald-600 dark:text-emerald-400 font-bold">{deal.deliverySpeed}</p>
+                      </div>
+
+                      <div className="flex items-center gap-3">
+                        <div className="text-right">
+                          <p className="text-sm font-black text-emerald-600 dark:text-emerald-400">{formatPrice(deal.price)}</p>
+                          <p className="text-[10px] text-gray-400 line-through">{formatPrice(deal.originalPrice)}</p>
+                        </div>
+                        <a
+                          href={deal.buyUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs font-bold flex items-center gap-1 shadow-sm"
+                        >
+                          <span>Buy</span>
+                          <ExternalLink className="w-3 h-3" />
+                        </a>
+                      </div>
+                    </div>
+                  ))}
                 </div>
               )}
 

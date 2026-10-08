@@ -15,6 +15,21 @@ export interface ProductSpecs {
   [key: string]: string | undefined;
 }
 
+export interface SellerDeal {
+  id: string;
+  storeName: 'Amazon India' | 'Flipkart' | 'Reliance Digital' | 'Croma' | 'Tata CLiQ' | 'Vijay Sales';
+  storeLogo?: string;
+  price: number;
+  originalPrice: number;
+  bankOffer: string;
+  deliverySpeed: string;
+  warrantyInfo: string;
+  storeRating: number;
+  rank: number;
+  buyUrl: string;
+  isBestDeal?: boolean;
+}
+
 export interface Product {
   id: string;
   name: string;
@@ -38,6 +53,7 @@ export interface Product {
   featuresScore: number;
   valueScore: number;
   recommendedUseCases: string[];
+  sellerDeals?: SellerDeal[];
 }
 
 export interface Review {

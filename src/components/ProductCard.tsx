@@ -11,6 +11,7 @@ interface ProductCardProps {
   onToggleWishlist: (product: Product) => void;
   onAddToCart: (product: Product) => void;
   onQuickView: (product: Product) => void;
+  onOpenDeals?: (product: Product) => void;
 }
 
 export const ProductCard: React.FC<ProductCardProps> = ({
@@ -21,6 +22,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
   onToggleWishlist,
   onAddToCart,
   onQuickView,
+  onOpenDeals,
 }) => {
   const discountPercent = Math.round(
     ((product.originalPrice - product.price) / product.originalPrice) * 100
@@ -74,11 +76,19 @@ export const ProductCard: React.FC<ProductCardProps> = ({
         <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
           <button
             onClick={() => onQuickView(product)}
-            className="bg-white/95 dark:bg-gray-900/95 text-gray-900 dark:text-white px-4 py-2 rounded-xl text-xs font-bold shadow-lg flex items-center gap-1.5 hover:bg-blue-600 hover:text-white transition-all transform translate-y-2 group-hover:translate-y-0"
+            className="bg-white/95 dark:bg-gray-900/95 text-gray-900 dark:text-white px-3 py-1.5 rounded-xl text-xs font-bold shadow-lg flex items-center gap-1.5 hover:bg-blue-600 hover:text-white transition-all transform translate-y-2 group-hover:translate-y-0"
           >
             <Eye className="w-3.5 h-3.5" />
             <span>Quick Specs</span>
           </button>
+          {onOpenDeals && (
+            <button
+              onClick={() => onOpenDeals(product)}
+              className="bg-emerald-600 text-white px-3 py-1.5 rounded-xl text-xs font-extrabold shadow-lg flex items-center gap-1 hover:bg-emerald-700 transition-all transform translate-y-2 group-hover:translate-y-0"
+            >
+              <span>4 Store Deals</span>
+            </button>
+          )}
         </div>
       </div>
 

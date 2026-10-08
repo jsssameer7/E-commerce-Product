@@ -17,6 +17,7 @@ import { CheckoutModal } from './components/CheckoutModal';
 import { WishlistDrawer } from './components/WishlistDrawer';
 import { UserOrdersModal } from './components/UserOrdersModal';
 import { AdminPanelModal } from './components/AdminPanelModal';
+import { OnlineDealsComparisonModal } from './components/OnlineDealsComparisonModal';
 import { Footer } from './components/Footer';
 import { Sparkles, SlidersHorizontal, CheckCircle2, Grid, List, Bot } from 'lucide-react';
 
@@ -133,6 +134,7 @@ export const App: React.FC = () => {
   const [isOrdersModalOpen, setIsOrdersModalOpen] = useState(false);
   const [isAdminModalOpen, setIsAdminModalOpen] = useState(false);
   const [quickViewProduct, setQuickViewProduct] = useState<Product | null>(null);
+  const [dealsProduct, setDealsProduct] = useState<Product | null>(null);
 
   // View mode grid vs list
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
@@ -459,6 +461,7 @@ export const App: React.FC = () => {
                     onToggleWishlist={handleToggleWishlist}
                     onAddToCart={(p) => handleAddToCart(p, 1)}
                     onQuickView={(p) => setQuickViewProduct(p)}
+                    onOpenDeals={(p) => setDealsProduct(p)}
                   />
                 ))}
               </div>
@@ -526,6 +529,12 @@ export const App: React.FC = () => {
           ]);
           showToast('Customer review posted!');
         }}
+      />
+
+      <OnlineDealsComparisonModal
+        isOpen={!!dealsProduct}
+        onClose={() => setDealsProduct(null)}
+        product={dealsProduct}
       />
 
       <CartDrawer
