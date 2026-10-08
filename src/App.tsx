@@ -3,6 +3,7 @@ import { Product, FilterState, CartItem, Coupon, Order, Review, User } from './t
 import { INITIAL_PRODUCTS } from './data/products';
 import { INITIAL_REVIEWS } from './data/reviews';
 import { DEMO_USERS } from './data/users';
+import { getProductsFromSupabase, createOrderInSupabase, isSupabaseConfigured } from './lib/supabase';
 import { Header } from './components/Header';
 import { ProductCard } from './components/ProductCard';
 import { FilterSidebar } from './components/FilterSidebar';
@@ -41,6 +42,18 @@ export const App: React.FC = () => {
     localStorage.removeItem('electro_products'); // refresh to INR pricing
     return INITIAL_PRODUCTS;
   });
+
+  useEffect(() => {
+    async function loadSupabaseData() {
+      if (isSupabaseConfigured) {
+        const fetchedProducts = await getProductsFromSupabase();
+        if (fetchedProducts && fetchedProducts.length > 0) {
+          setProducts(fetchedProducts);
+        }
+      }
+    }
+    loadSupabaseData();
+  }, []);
 
   useEffect(() => {
     localStorage.setItem('electro_products', JSON.stringify(products));
@@ -535,6 +548,9 @@ export const App: React.FC = () => {
         appliedCoupon={appliedCoupon}
         onOrderPlaced={(newOrder) => {
           setOrders((prev) => [newOrder, ...prev]);
+          if (isSupabaseConfigured) {
+            createOrderInSupabase(newOrder, currentUser?.id);
+          }
           setAppliedCoupon(null);
         }}
         onClearCart={() => setCartItems([])}
