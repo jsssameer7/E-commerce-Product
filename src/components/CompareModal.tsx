@@ -2,6 +2,7 @@ import React, { useState, useMemo } from 'react';
 import { Product } from '../types';
 import { formatPrice } from '../utils/formatCurrency';
 import { rankComparisonProducts } from '../utils/rankComparisonProducts';
+import { getSellerDeals } from '../utils/getSellerDeals';
 import { 
   X, 
   Check, 
@@ -14,7 +15,8 @@ import {
   AlertCircle,
   HelpCircle,
   Award,
-  Trophy
+  Trophy,
+  ExternalLink
 } from 'lucide-react';
 
 interface CompareModalProps {
@@ -327,6 +329,29 @@ export const CompareModal: React.FC<CompareModalProps> = ({
                               <ShoppingCart className="w-3.5 h-3.5" />
                               <span>Add to Cart</span>
                             </button>
+
+                            {/* Buy on Online Sellers (Amazon, Flipkart, Reliance) */}
+                            <div className="mt-3 w-full space-y-1.5 border-t border-gray-200 dark:border-gray-800 pt-2 text-[11px] no-print">
+                              <p className="text-[10px] font-extrabold uppercase text-gray-400 text-center">
+                                Buy on Top Online Sellers:
+                              </p>
+                              <div className="grid grid-cols-2 gap-1">
+                                {getSellerDeals(product).slice(0, 2).map((deal) => (
+                                  <a
+                                    key={deal.id}
+                                    href={deal.buyUrl}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="p-1.5 rounded-lg bg-gray-50 dark:bg-gray-800 hover:bg-blue-50 dark:hover:bg-blue-950 border border-gray-200 dark:border-gray-700 flex flex-col items-center text-[10px] font-bold text-gray-800 dark:text-gray-200 transition-all hover:scale-105"
+                                  >
+                                    <span className="truncate flex items-center gap-0.5">
+                                      {deal.storeName.split(' ')[0]} <ExternalLink className="w-2.5 h-2.5" />
+                                    </span>
+                                    <span className="text-[9px] text-emerald-600 dark:text-emerald-400 font-extrabold">{formatPrice(deal.price)}</span>
+                                  </a>
+                                ))}
+                              </div>
+                            </div>
                           </div>
                         </th>
                       );

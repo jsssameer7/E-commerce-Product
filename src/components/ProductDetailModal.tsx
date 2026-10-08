@@ -280,6 +280,66 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                 </button>
               </div>
 
+              {/* Live Online Retailer Prices & Direct Buy Links */}
+              <div className="mt-5 p-4 rounded-2xl bg-gradient-to-br from-slate-50 to-blue-50/50 dark:from-gray-800/80 dark:to-blue-950/20 border border-blue-200/80 dark:border-gray-700">
+                <div className="flex items-center justify-between mb-3">
+                  <div className="flex items-center gap-2">
+                    <Building2 className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+                    <h4 className="text-xs font-black uppercase tracking-wider text-gray-900 dark:text-white">
+                      Buy on Online Stores (Amazon, Flipkart, Reliance, Croma)
+                    </h4>
+                  </div>
+                  <span className="text-[10px] font-bold text-blue-600 dark:text-blue-400 bg-blue-100 dark:bg-blue-950 px-2 py-0.5 rounded-full">
+                    Live Deal Links
+                  </span>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                  {getSellerDeals(product).map((deal) => (
+                    <div
+                      key={deal.id}
+                      className={`p-2.5 rounded-xl border flex items-center justify-between gap-2 transition-all ${
+                        deal.isBestDeal
+                          ? 'bg-amber-500/10 border-amber-400/80 dark:bg-amber-950/40 dark:border-amber-500/50 shadow-sm'
+                          : 'bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-800'
+                      }`}
+                    >
+                      <div className="min-w-0">
+                        <div className="flex items-center gap-1.5">
+                          <span className={`text-[9px] font-extrabold px-1.5 py-0.2 rounded ${deal.isBestDeal ? 'bg-amber-500 text-white' : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300'}`}>
+                            #{deal.rank}
+                          </span>
+                          <span className="text-xs font-extrabold text-gray-900 dark:text-white truncate">
+                            {deal.storeName}
+                          </span>
+                        </div>
+                        <p className="text-xs font-black text-emerald-600 dark:text-emerald-400 mt-0.5">
+                          {formatPrice(deal.price)}
+                        </p>
+                      </div>
+
+                      <a
+                        href={deal.buyUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={`px-3 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1 shrink-0 transition-transform hover:scale-105 ${
+                          deal.storeName.includes('Amazon')
+                            ? 'bg-amber-500 hover:bg-amber-600 text-gray-950'
+                            : deal.storeName.includes('Flipkart')
+                            ? 'bg-blue-600 hover:bg-blue-700 text-white'
+                            : deal.storeName.includes('Reliance')
+                            ? 'bg-rose-600 hover:bg-rose-700 text-white'
+                            : 'bg-indigo-600 hover:bg-indigo-700 text-white'
+                        }`}
+                      >
+                        <span>Buy on {deal.storeName.split(' ')[0]}</span>
+                        <ExternalLink className="w-3 h-3" />
+                      </a>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
             </div>
 
             {/* Bottom Tabs: Specs / Reviews / Shipping */}
