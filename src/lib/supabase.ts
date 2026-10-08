@@ -103,6 +103,38 @@ export async function createProductInSupabase(product: Product): Promise<boolean
   return true;
 }
 
+/** Bulk seed/sync products to Supabase */
+export async function seedProductsToSupabase(productsList: Product[]): Promise<void> {
+  if (!isSupabaseConfigured) return;
+  
+  for (const product of productsList) {
+    await supabase.from('products').upsert({
+      id: product.id,
+      name: product.name,
+      brand: product.brand,
+      category: product.category,
+      price: product.price,
+      original_price: product.originalPrice,
+      rating: product.rating,
+      review_count: product.reviewCount,
+      image: product.image,
+      images: product.images,
+      badge: product.badge,
+      stock: product.stock,
+      specs: product.specs,
+      highlights: product.highlights,
+      description: product.description,
+      pros: product.pros,
+      cons: product.cons,
+      release_date: product.releaseDate,
+      performance_score: product.performanceScore,
+      features_score: product.featuresScore,
+      value_score: product.valueScore,
+      recommended_use_cases: product.recommendedUseCases
+    }, { onConflict: 'id' });
+  }
+}
+
 // ========================================================
 // REVIEWS API FUNCTIONS
 // ========================================================

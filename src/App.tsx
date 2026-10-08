@@ -3,7 +3,7 @@ import { Product, FilterState, CartItem, Coupon, Order, Review, User } from './t
 import { INITIAL_PRODUCTS } from './data/products';
 import { INITIAL_REVIEWS } from './data/reviews';
 import { DEMO_USERS } from './data/users';
-import { getProductsFromSupabase, createOrderInSupabase, isSupabaseConfigured } from './lib/supabase';
+import { getProductsFromSupabase, createOrderInSupabase, seedProductsToSupabase, isSupabaseConfigured } from './lib/supabase';
 import { Header } from './components/Header';
 import { ProductCard } from './components/ProductCard';
 import { FilterSidebar } from './components/FilterSidebar';
@@ -39,7 +39,6 @@ export const App: React.FC = () => {
 
   // Catalog & Reviews State
   const [products, setProducts] = useState<Product[]>(() => {
-    localStorage.removeItem('electro_products'); // refresh to INR pricing
     return INITIAL_PRODUCTS;
   });
 
@@ -48,7 +47,11 @@ export const App: React.FC = () => {
       if (isSupabaseConfigured) {
         const fetchedProducts = await getProductsFromSupabase();
         if (fetchedProducts && fetchedProducts.length > 0) {
-          setProducts(fetchedProducts);
+          const existingIds = new Set(fetchedProducts.map((p) => p.id));
+          const missingFromSupabase = INITIAL_PRODUCTS.filter((p) => !existingIds.has(p.id));
+          setProducts([...fetchedProducts, ...missingFromSupabase]);
+        } else {
+          setProducts(INITIAL_PRODUCTS);
         }
       }
     }
