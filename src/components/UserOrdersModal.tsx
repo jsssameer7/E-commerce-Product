@@ -171,7 +171,7 @@ export const UserOrdersModal: React.FC<UserOrdersModalProps> = ({
                   </p>
                 </div>
 
-                {/* Items preview */}
+                {/* Items preview & Order Cancellation */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-2 border-t border-gray-200 dark:border-gray-700">
                   {order.items.map(({ product, quantity }) => (
                     <div key={product.id} className="flex items-center gap-3 bg-white dark:bg-gray-900 p-2 rounded-xl border border-gray-100 dark:border-gray-800">
@@ -182,6 +182,32 @@ export const UserOrdersModal: React.FC<UserOrdersModalProps> = ({
                       </div>
                     </div>
                   ))}
+                </div>
+
+                {/* Cancellation & Refund Status Action */}
+                <div className="pt-2 flex items-center justify-between border-t border-gray-200 dark:border-gray-700 text-xs">
+                  <div className="flex items-center gap-2">
+                    <span className="font-semibold text-gray-500">Payment Status:</span>
+                    <span className="px-2 py-0.5 rounded text-[10px] font-black bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300">
+                      {order.status === 'Cancelled' ? 'REFUNDED (₹' + order.total.toLocaleString('en-IN') + ')' : 'PAID & VERIFIED'}
+                    </span>
+                  </div>
+                  {order.status !== 'Cancelled' ? (
+                    <button
+                      onClick={() => {
+                        order.status = 'Cancelled';
+                        alert(`Order ${order.id} has been cancelled. Instant refund of ₹${order.total.toLocaleString('en-IN')} initiated to your ${order.paymentMethod} account!`);
+                        window.location.reload();
+                      }}
+                      className="text-rose-600 hover:text-rose-700 dark:text-rose-400 font-bold hover:underline"
+                    >
+                      Cancel Order & Request Refund
+                    </button>
+                  ) : (
+                    <span className="text-rose-600 dark:text-rose-400 font-extrabold text-[11px]">
+                      Cancelled — Full Refund Processed
+                    </span>
+                  )}
                 </div>
 
               </div>

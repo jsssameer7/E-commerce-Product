@@ -115,7 +115,7 @@ export interface Order {
   total: number;
   shippingAddress: ShippingAddress;
   paymentMethod: string;
-  status: 'Processing' | 'Shipped' | 'Out for Delivery' | 'Delivered';
+  status: 'Processing' | 'Shipped' | 'Out for Delivery' | 'Delivered' | 'Cancelled' | 'Refunded';
   trackingNumber: string;
   estimatedDelivery: string;
 }
