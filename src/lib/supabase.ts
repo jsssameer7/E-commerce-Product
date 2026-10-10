@@ -2,8 +2,8 @@ import { createClient } from '@supabase/supabase-js';
 import { Product, Review, Coupon, Order } from '../types';
 
 // Fetch Supabase environment variables with safe defaults for deployment
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || 'https://wwklornxyolqpqvqspys.supabase.co';
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || 'sb_publishable_zE7AuDV1Z83yAO_IFlsFbw_UaM5UIgv';
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || '';
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || '';
 
 // Check if Supabase keys are configured
 export const isSupabaseConfigured = Boolean(

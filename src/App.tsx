@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { Product, FilterState, CartItem, Coupon, Order, Review, User } from './types';
 import { INITIAL_PRODUCTS } from './data/products';
 import { INITIAL_REVIEWS } from './data/reviews';
-import { getProductsFromSupabase, createOrderInSupabase, createProductInSupabase, isSupabaseConfigured } from './lib/supabase';
+
 import { Header } from './components/Header';
 import { ProductCard } from './components/ProductCard';
 import { FilterSidebar } from './components/FilterSidebar';
@@ -18,6 +18,8 @@ import { UserOrdersModal } from './components/UserOrdersModal';
 import { AdminPanelModal } from './components/AdminPanelModal';
 import { OnlineDealsComparisonModal } from './components/OnlineDealsComparisonModal';
 import { Footer } from './components/Footer';
+import { ShoppingAssistant } from './components/ShoppingAssistant';
+import { api } from './lib/api';
 import { Sparkles, SlidersHorizontal, CheckCircle2, Grid, List, Bot, Sun, Moon, Scale, Tag, Trophy } from 'lucide-react';
 
 export const App: React.FC = () => {
@@ -43,19 +45,21 @@ export const App: React.FC = () => {
   });
 
   useEffect(() => {
-    async function loadSupabaseData() {
-      if (isSupabaseConfigured) {
-        const fetchedProducts = await getProductsFromSupabase();
-        if (fetchedProducts && fetchedProducts.length > 0) {
-          const existingIds = new Set(fetchedProducts.map((p) => p.id));
-          const missingFromSupabase = INITIAL_PRODUCTS.filter((p) => !existingIds.has(p.id));
-          setProducts([...fetchedProducts, ...missingFromSupabase]);
-        } else {
-          setProducts(INITIAL_PRODUCTS);
+    let active = true;
+    async function loadCatalog() {
+      try {
+        const result = await api.products();
+        if (active && result.items.length > 0) {
+          setProducts(result.items as Product[]);
+          return;
         }
+      } catch {
+        // Offline/demo fallback: retain the bundled catalog when API is unavailable.
       }
+      // Keep the bundled sample catalog available for UI development if the API is offline.
     }
-    loadSupabaseData();
+    void loadCatalog();
+    return () => { active = false; };
   }, []);
 
   useEffect(() => {
@@ -110,17 +114,58 @@ export const App: React.FC = () => {
   }, [orders]);
 
   // User Session State (null by default so visitors MUST login or signup first)
-  const [currentUser, setCurrentUser] = useState<User | null>(() => {
-    const saved = localStorage.getItem('electro_user_session');
-    return saved ? JSON.parse(saved) : null;
-  });
+  const [currentUser, setCurrentUser] = useState<User | null>(null);
+
+  // Server is the source of truth for authenticated order history.
+  useEffect(() => {
+    const token = sessionStorage.getItem('electro_api_token');
+    if (!currentUser || !token) return;
+    api.myOrders(token).then((result) => {
+      const rows = result.items as any[];
+      const serverOrders: Order[] = rows.map((row) => ({
+        id: String(row._id),
+        userId: currentUser.id,
+        userEmail: currentUser.email,
+        customerName: currentUser.name,
+        date: new Date(row.createdAt || Date.now()).toISOString().slice(0, 10),
+        items: (row.items || []).map((item: any) => {
+          const known = INITIAL_PRODUCTS.find((p) => p.id === item.productId) || products.find((p) => p.id === item.productId);
+          const product = known || ({
+            id: item.productId, name: item.name || 'Product', brand: '', category: 'all',
+            price: Number(item.unitPrice || 0), originalPrice: Number(item.unitPrice || 0), rating: 0,
+            reviewCount: 0, image: item.image || '', images: item.image ? [item.image] : [], stock: 0,
+            specs: {}, highlights: [], description: '', pros: [], cons: [], releaseDate: '',
+            performanceScore: 0, featuresScore: 0, valueScore: 0, recommendedUseCases: [],
+          } as Product);
+          return { product: { ...product, price: Number(item.unitPrice || product.price) }, quantity: Number(item.quantity || 1) };
+        }),
+        subtotal: Number(row.subtotal || 0), discount: Number(row.discount || 0), tax: Number(row.tax || 0),
+        shipping: Number(row.shipping || 0), total: Number(row.total || 0),
+        shippingAddress: row.shippingAddress, paymentMethod: row.paymentMethod || 'razorpay',
+        status: row.status || 'Processing', trackingNumber: row.trackingNumber || 'Pending',
+        estimatedDelivery: row.estimatedDelivery ? new Date(row.estimatedDelivery).toISOString().slice(0,10) : 'To be confirmed',
+      }));
+      setOrders(serverOrders);
+    }).catch((error) => {
+      console.warn('Could not load server order history:', error);
+    });
+  }, [currentUser?.id]);
 
   useEffect(() => {
-    if (currentUser) {
-      localStorage.setItem('electro_user_session', JSON.stringify(currentUser));
-    } else {
+    const token = sessionStorage.getItem('electro_api_token');
+    if (!token) return;
+    api.me(token).then(({ user }) => {
+      setCurrentUser({ ...user, avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80' });
+    }).catch(() => {
+      sessionStorage.removeItem('electro_api_token');
       localStorage.removeItem('electro_user_session');
-    }
+      sessionStorage.removeItem('electro_api_token');
+      setCurrentUser(null);
+    });
+  }, []);
+
+  useEffect(() => {
+    if (!currentUser) localStorage.removeItem('electro_user_session');
   }, [currentUser]);
 
   // Modal Controllers
@@ -216,15 +261,22 @@ export const App: React.FC = () => {
     setProducts((prev) =>
       prev.map((p) => (p.id === productId ? { ...p, stock: newStock } : p))
     );
-    showToast('Inventory stock updated!');
+    const token = sessionStorage.getItem('electro_api_token');
+    if (token) api.updateProduct(token, productId, { stock: newStock }).catch((error) => showToast(error instanceof Error ? error.message : 'Could not save stock update.'));
+    showToast('Inventory update submitted.');
   };
 
   const handleAddProduct = (newProduct: Product) => {
     setProducts((prev) => [newProduct, ...prev]);
-    if (isSupabaseConfigured) {
-      createProductInSupabase(newProduct);
+    const token = sessionStorage.getItem('electro_api_token');
+    if (token) {
+      api.createProduct(token, { ...newProduct, productId: newProduct.id }).catch((error) => {
+        showToast(error instanceof Error ? error.message : 'Could not save product to server.');
+      });
+    } else {
+      showToast('Sign in with an administrator account to persist catalog changes.');
     }
-    showToast(`Added ${newProduct.name} to active store! Live for all customers.`);
+    showToast(`Added ${newProduct.name}. Saving to the connected catalog when authorized.`);
   };
 
   // Filter products pipeline
@@ -399,7 +451,8 @@ export const App: React.FC = () => {
         user={currentUser}
         openAuthModal={() => setIsAuthModalOpen(true)}
         onLogout={() => {
-          setCurrentUser(null);
+          sessionStorage.removeItem('electro_api_token');
+      setCurrentUser(null);
           showToast('Signed out successfully.');
         }}
         darkMode={darkMode}
@@ -642,9 +695,6 @@ export const App: React.FC = () => {
         currentUser={currentUser}
         onOrderPlaced={(newOrder) => {
           setOrders((prev) => [newOrder, ...prev]);
-          if (isSupabaseConfigured) {
-            createOrderInSupabase(newOrder, currentUser?.id);
-          }
           setAppliedCoupon(null);
         }}
         onClearCart={() => setCartItems([])}
@@ -664,6 +714,8 @@ export const App: React.FC = () => {
         onAddProduct={handleAddProduct}
         onUpdateStock={handleUpdateStock}
       />
+
+      <ShoppingAssistant />
 
       {/* Footer */}
       <Footer onCategorySelect={(cat) => setFilters((prev) => ({ ...prev, category: cat }))} />

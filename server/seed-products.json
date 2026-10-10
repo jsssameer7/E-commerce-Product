@@ -1,0 +1,692 @@
+[
+  {
+    "id": "phone-1",
+    "name": "Apex Pro 16 Max",
+    "brand": "Apex",
+    "category": "smartphones",
+    "price": 139900,
+    "originalPrice": 149900,
+    "rating": 4.9,
+    "reviewCount": 342,
+    "image": "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=800&q=80",
+    "images": [
+      "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1592750475338-74b7b21085ab?auto=format&fit=crop&w=800&q=80"
+    ],
+    "badge": "Editor's Choice",
+    "stock": 15,
+    "specs": {
+      "display": "6.9\" Super Retina XDR OLED (120Hz, 3000 nits)",
+      "processor": "A18 Pro Octa-core Neural Engine",
+      "ram": "8 GB LPDDR5X",
+      "storage": "256 GB NVMe",
+      "battery": "4685 mAh (30W Fast Charge, MagSafe 25W)",
+      "camera": "48MP Main + 48MP Ultra-Wide + 12MP 5x Telephoto",
+      "os": "iOS 18",
+      "weight": "227 grams",
+      "warranty": "1 Year AppleCare",
+      "connectivity": "5G, Wi-Fi 7, Bluetooth 5.3, Satellite SOS",
+      "waterResistance": "IP68 (6m up to 30 mins)"
+    },
+    "highlights": [
+      "Titanium frame with micro-blasted finish",
+      "4K 120 fps Dolby Vision video recording",
+      "Action button & dedicated Camera Control key",
+      "Industry-leading battery life"
+    ],
+    "description": "The flagship smartphone with Grade 5 Titanium design, groundbreaking camera system, and ultra-fast A18 Pro processing capability.",
+    "pros": [
+      "Superb 5x telephoto camera",
+      "Exceptional battery endurance",
+      "Bright 3000 nit display",
+      "Sturdy titanium build"
+    ],
+    "cons": [
+      "Slightly heavy in hand",
+      "High entry price tag"
+    ],
+    "releaseDate": "2024-09-20",
+    "performanceScore": 9.8,
+    "featuresScore": 9.6,
+    "valueScore": 9,
+    "recommendedUseCases": [
+      "4K Video & Photography",
+      "Heavy Gaming",
+      "Business & Executive"
+    ]
+  },
+  {
+    "id": "phone-2",
+    "name": "Galaxy Ultra X25",
+    "brand": "Samsung",
+    "category": "smartphones",
+    "price": 129900,
+    "originalPrice": 139900,
+    "rating": 4.8,
+    "reviewCount": 418,
+    "image": "https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?auto=format&fit=crop&w=800&q=80",
+    "images": [
+      "https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?auto=format&fit=crop&w=800&q=80"
+    ],
+    "badge": "Best Seller",
+    "stock": 22,
+    "specs": {
+      "display": "6.8\" Dynamic AMOLED 2X (1-120Hz, Anti-Reflective)",
+      "processor": "Snapdragon 8 Gen 4 Elite",
+      "ram": "12 GB LPDDR5X",
+      "storage": "512 GB UFS 4.0",
+      "battery": "5000 mAh (45W Wired, 15W Wireless)",
+      "camera": "200MP Main + 50MP Periscope (5x) + 50MP Ultra-Wide",
+      "os": "Android 15 with One UI 7",
+      "weight": "219 grams",
+      "warranty": "1 Year Manufacturer",
+      "connectivity": "5G, Wi-Fi 7, Bluetooth 5.4",
+      "waterResistance": "IP68"
+    },
+    "highlights": [
+      "Built-in S Pen stylus with gesture controls",
+      "200MP Quad-Telephoto Camera with 100x Space Zoom",
+      "Galaxy AI Live Translate & Circle to Search"
+    ],
+    "description": "Ultimate power and productivity powerhouse with integrated S-Pen and 200MP quad-camera setup.",
+    "pros": [
+      "Integrated S-Pen stylus",
+      "Anti-reflective screen glass",
+      "Versatile camera setup"
+    ],
+    "cons": [
+      "Bulky boxy corners"
+    ],
+    "releaseDate": "2025-01-15",
+    "performanceScore": 9.7,
+    "featuresScore": 9.8,
+    "valueScore": 9.2,
+    "recommendedUseCases": [
+      "Productivity & Note Taking",
+      "4K Video & Photography",
+      "Heavy Gaming"
+    ]
+  },
+  {
+    "id": "phone-3",
+    "name": "Pixel Vision 9 Pro",
+    "brand": "Google",
+    "category": "smartphones",
+    "price": 109900,
+    "originalPrice": 119900,
+    "rating": 4.7,
+    "reviewCount": 210,
+    "image": "https://images.unsplash.com/photo-1598327105666-5b89351aff97?auto=format&fit=crop&w=800&q=80",
+    "images": [
+      "https://images.unsplash.com/photo-1598327105666-5b89351aff97?auto=format&fit=crop&w=800&q=80"
+    ],
+    "badge": "Top Rated",
+    "stock": 18,
+    "specs": {
+      "display": "6.3\" Super Actua OLED (1-120Hz, 3000 nits)",
+      "processor": "Google Tensor G4 with Titan M2 security",
+      "ram": "16 GB LPDDR5X",
+      "storage": "256 GB UFS 3.1",
+      "battery": "4700 mAh (30W Fast Charging)",
+      "camera": "50MP Main + 48MP Ultra-Wide + 48MP 5x Telephoto",
+      "os": "Android 15 Pure Google",
+      "weight": "199 grams",
+      "warranty": "1 Year Google Warranty",
+      "connectivity": "5G, Wi-Fi 7, Bluetooth 5.3",
+      "waterResistance": "IP68"
+    },
+    "highlights": [
+      "Gemini Nano AI Assistant on-device",
+      "Best-in-class computational portrait & night photos",
+      "16GB RAM standard"
+    ],
+    "description": "Designed for AI computational photography enthusiasts with pure Android 15.",
+    "pros": [
+      "Clean stock UI",
+      "16GB RAM standard",
+      "Incredible portrait photos"
+    ],
+    "cons": [
+      "30W charging speed"
+    ],
+    "releaseDate": "2024-08-13",
+    "performanceScore": 9.3,
+    "featuresScore": 9.5,
+    "valueScore": 9.1,
+    "recommendedUseCases": [
+      "4K Video & Photography",
+      "Clean Android & AI Workflow",
+      "Daily Driver"
+    ]
+  },
+  {
+    "id": "phone-4",
+    "name": "OnePlus Nord 13 Ultra",
+    "brand": "OnePlus",
+    "category": "smartphones",
+    "price": 59900,
+    "originalPrice": 69900,
+    "rating": 4.85,
+    "reviewCount": 154,
+    "image": "https://images.unsplash.com/photo-1565849904461-04a58ad377e0?auto=format&fit=crop&w=800&q=80",
+    "images": [
+      "https://images.unsplash.com/photo-1565849904461-04a58ad377e0?auto=format&fit=crop&w=800&q=80"
+    ],
+    "badge": "Best Value",
+    "stock": 30,
+    "specs": {
+      "display": "6.82\" 2K 120Hz AMOLED (4500 nits peak)",
+      "processor": "Snapdragon 8 Gen 4",
+      "ram": "16 GB LPDDR5X",
+      "storage": "512 GB UFS 4.0",
+      "battery": "6000 mAh (100W SUPERVOOC Charge)",
+      "camera": "50MP Sony LYT-808 + 64MP Periscope",
+      "os": "OxygenOS 15 based on Android 15",
+      "weight": "220 grams",
+      "warranty": "1 Year Manufacturer",
+      "connectivity": "5G, Wi-Fi 7, Bluetooth 5.4",
+      "waterResistance": "IP65"
+    },
+    "highlights": [
+      "100W SUPERVOOC fast charging (0 to 100% in 25m)",
+      "Massive 6000mAh battery capacity",
+      "Hasselblad color optics"
+    ],
+    "description": "Speed champion with a massive 6000mAh battery and 100W fast charger.",
+    "pros": [
+      "100W fast charger included",
+      "Huge 6000mAh battery",
+      "Unbeatable value for performance"
+    ],
+    "cons": [
+      "IP65 rating"
+    ],
+    "releaseDate": "2024-12-05",
+    "performanceScore": 9.6,
+    "featuresScore": 9.3,
+    "valueScore": 9.8,
+    "recommendedUseCases": [
+      "Heavy Gaming",
+      "College & Student Budget",
+      "Long Battery Endurance"
+    ]
+  },
+  {
+    "id": "laptop-1",
+    "name": "MacBook Pro 16 M4 Max",
+    "brand": "Apple",
+    "category": "laptops",
+    "price": 349900,
+    "originalPrice": 369900,
+    "rating": 4.95,
+    "reviewCount": 520,
+    "image": "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=800&q=80",
+    "images": [
+      "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=800&q=80"
+    ],
+    "badge": "Editor's Choice",
+    "stock": 10,
+    "specs": {
+      "display": "16.2\" Liquid Retina XDR (3024x1964, 1600 nits, 120Hz)",
+      "processor": "Apple M4 Max (16-core CPU, 40-core GPU)",
+      "ram": "48 GB Unified Memory",
+      "storage": "1 TB PCIe NVMe SSD",
+      "battery": "100Wh (Up to 24 hours battery life)",
+      "camera": "12MP Center Stage Camera",
+      "os": "macOS Sequoia",
+      "weight": "2.14 kg",
+      "warranty": "1 Year Apple Limited Warranty",
+      "connectivity": "Wi-Fi 6E, Bluetooth 5.3, 3x Thunderbolt 5, HDMI 2.1"
+    },
+    "highlights": [
+      "M4 Max chip with 40-core GPU acceleration",
+      "Thunderbolt 5 support up to 120Gbps",
+      "24 hour battery endurance"
+    ],
+    "description": "Ultimate workstation for 4K/8K video editing, 3D graphics, and software engineering.",
+    "pros": [
+      "Unmatched render performance",
+      "Liquid Retina XDR screen",
+      "24 hr battery"
+    ],
+    "cons": [
+      "High memory upgrade cost"
+    ],
+    "releaseDate": "2024-11-08",
+    "performanceScore": 9.9,
+    "featuresScore": 9.7,
+    "valueScore": 8.9,
+    "recommendedUseCases": [
+      "4K Video Editing & Design",
+      "Software Engineering & AI",
+      "Workstation Studio"
+    ]
+  },
+  {
+    "id": "laptop-2",
+    "name": "Asus Vivobook Pro 15 OLED",
+    "brand": "Asus",
+    "category": "laptops",
+    "price": 64900,
+    "originalPrice": 74900,
+    "rating": 4.8,
+    "reviewCount": 290,
+    "image": "https://images.unsplash.com/photo-1541807084-5c52b6b3adef?auto=format&fit=crop&w=800&q=80",
+    "images": [
+      "https://images.unsplash.com/photo-1541807084-5c52b6b3adef?auto=format&fit=crop&w=800&q=80"
+    ],
+    "badge": "Best Value",
+    "stock": 25,
+    "specs": {
+      "display": "15.6\" 2.8K 120Hz OLED Display (100% DCI-P3)",
+      "processor": "AMD Ryzen 7 7840HS Octa-Core",
+      "ram": "16 GB LPDDR5",
+      "storage": "1 TB PCIe NVMe SSD",
+      "battery": "70Wh (Up to 10 hours battery life)",
+      "camera": "1080p FHD IR Camera",
+      "os": "Windows 11 Home",
+      "weight": "1.65 kg",
+      "warranty": "1 Year Asus Onsite Warranty",
+      "connectivity": "Wi-Fi 6E, Bluetooth 5.3, HDMI 2.1, USB-C"
+    },
+    "highlights": [
+      "Vibrant 2.8K 120Hz OLED screen for rich color accuracy",
+      "Ryzen 7 7840HS high speed multithreaded processing",
+      "Lightweight 1.65kg slim aluminum chassis"
+    ],
+    "description": "Ideal laptop for college students, programming, and general creative work with a stunning OLED display.",
+    "pros": [
+      "Gorgeous 2.8K OLED screen",
+      "Fast Ryzen 7 processor",
+      "Excellent value for money under \u20b965k"
+    ],
+    "cons": [
+      "Integrated graphics"
+    ],
+    "releaseDate": "2024-05-15",
+    "performanceScore": 9.1,
+    "featuresScore": 9.4,
+    "valueScore": 9.7,
+    "recommendedUseCases": [
+      "College & Programming",
+      "Student & Daily Office",
+      "Casual Editing"
+    ]
+  },
+  {
+    "id": "laptop-3",
+    "name": "Dell XPS 16 OLED Studio",
+    "brand": "Dell",
+    "category": "laptops",
+    "price": 269900,
+    "originalPrice": 289900,
+    "rating": 4.7,
+    "reviewCount": 189,
+    "image": "https://images.unsplash.com/photo-1593642632823-8f785ba67e45?auto=format&fit=crop&w=800&q=80",
+    "images": [
+      "https://images.unsplash.com/photo-1593642632823-8f785ba67e45?auto=format&fit=crop&w=800&q=80"
+    ],
+    "badge": "Best Seller",
+    "stock": 14,
+    "specs": {
+      "display": "16.3\" 4K+ Touch OLED (120Hz, 400 nits)",
+      "processor": "Intel Core Ultra 9 185H",
+      "ram": "32 GB LPDDR5X",
+      "storage": "1 TB PCIe Gen 4 SSD",
+      "battery": "99.5Wh (Up to 11 hours)",
+      "camera": "1080p FHD IR Camera",
+      "os": "Windows 11 Pro",
+      "weight": "2.13 kg",
+      "warranty": "1 Year Premium Support"
+    },
+    "highlights": [
+      "Nvidia RTX 4070 Laptop GPU 8GB",
+      "Gorilla Glass 3 seamless glass trackpad",
+      "CNC aluminum body"
+    ],
+    "description": "Futuristic design crafted from machined aluminum and glass with 4K+ OLED touch screen.",
+    "pros": [
+      "4K+ OLED touch panel",
+      "Sleek invisible glass trackpad",
+      "RTX 4070 graphics"
+    ],
+    "cons": [
+      "No physical function keys"
+    ],
+    "releaseDate": "2024-03-20",
+    "performanceScore": 9.5,
+    "featuresScore": 9.6,
+    "valueScore": 9,
+    "recommendedUseCases": [
+      "4K Video Editing & Design",
+      "Business & Executive",
+      "Gaming & Work"
+    ]
+  },
+  {
+    "id": "tv-1",
+    "name": "Sony Bravia XR 55 OLED 4K",
+    "brand": "Sony",
+    "category": "tv",
+    "price": 134900,
+    "originalPrice": 149900,
+    "rating": 4.9,
+    "reviewCount": 180,
+    "image": "https://images.unsplash.com/photo-1593784991095-a205069470b6?auto=format&fit=crop&w=800&q=80",
+    "images": [
+      "https://images.unsplash.com/photo-1593784991095-a205069470b6?auto=format&fit=crop&w=800&q=80"
+    ],
+    "badge": "Editor's Choice",
+    "stock": 12,
+    "specs": {
+      "display": "55\" 4K Ultra HD OLED (120Hz, Cognitive Processor XR)",
+      "processor": "Cognitive Processor XR with XR Triluminos Pro",
+      "ram": "32 GB Internal Storage",
+      "os": "Google TV with hands-free Voice Search",
+      "audio": "Acoustic Surface Audio+ (50W 3.2ch Output)",
+      "connectivity": "4x HDMI 2.1 (4K 120fps, VRR, ALLM), 2x USB, Wi-Fi 6",
+      "warranty": "3 Year Comprehensive Warranty"
+    },
+    "highlights": [
+      "Cognitive Processor XR reproduces picture and sound like human eyes",
+      "Acoustic Surface Audio turns the screen itself into a speaker",
+      "Perfect for PlayStation 5 with Auto HDR Tone Mapping & 120Hz"
+    ],
+    "description": "Breathtaking 4K OLED contrast and cinematic Acoustic Surface Audio tuned specially for movies and next-gen console gaming.",
+    "pros": [
+      "Deep pitch blacks & vibrant contrast",
+      "Sound comes directly from screen",
+      "Perfect PS5 gaming features"
+    ],
+    "cons": [
+      "Premium price bracket"
+    ],
+    "releaseDate": "2024-06-10",
+    "performanceScore": 9.8,
+    "featuresScore": 9.7,
+    "valueScore": 9.3,
+    "recommendedUseCases": [
+      "4K Cinema & Movies",
+      "PS5 & Xbox Gaming",
+      "Living Room Flagship"
+    ]
+  },
+  {
+    "id": "tv-2",
+    "name": "Samsung 55 Neo QLED 4K Smart TV",
+    "brand": "Samsung",
+    "category": "tv",
+    "price": 84900,
+    "originalPrice": 99900,
+    "rating": 4.8,
+    "reviewCount": 260,
+    "image": "https://images.unsplash.com/photo-1593784991095-a205069470b6?auto=format&fit=crop&w=800&q=80",
+    "images": [
+      "https://images.unsplash.com/photo-1593784991095-a205069470b6?auto=format&fit=crop&w=800&q=80"
+    ],
+    "badge": "Best Value",
+    "stock": 20,
+    "specs": {
+      "display": "55\" 4K Quantum Mini LED (120Hz, Neo Quantum HDR)",
+      "processor": "NQ4 AI Gen2 Processor",
+      "os": "Tizen OS with Samsung Knox Security",
+      "audio": "Dolby Atmos & Object Tracking Sound (60W)",
+      "connectivity": "4x HDMI 2.1, Wi-Fi 5, Bluetooth 5.2",
+      "warranty": "2 Year Manufacturer Warranty"
+    },
+    "highlights": [
+      "Quantum Mini-LED grid for intense brightness and zero burn-in",
+      "NQ4 AI Gen2 Processor upscales low resolution to 4K",
+      "SolarCell Remote charges automatically from indoor lighting"
+    ],
+    "description": "Ultra bright Neo QLED 4K TV designed for bright Indian living rooms with zero burn-in risk.",
+    "pros": [
+      "Ultra bright display for sunlit rooms",
+      "No risk of screen burn-in",
+      "Solar powered remote control"
+    ],
+    "cons": [
+      "Does not support Dolby Vision (uses HDR10+)"
+    ],
+    "releaseDate": "2024-04-20",
+    "performanceScore": 9.5,
+    "featuresScore": 9.5,
+    "valueScore": 9.6,
+    "recommendedUseCases": [
+      "Living Room & Sports",
+      "Sunlit Bright Rooms",
+      "PS5 & Xbox Gaming"
+    ]
+  },
+  {
+    "id": "audio-1",
+    "name": "Sony WH-1000XM5 Noise Canceling",
+    "brand": "Sony",
+    "category": "audio",
+    "price": 29900,
+    "originalPrice": 34900,
+    "rating": 4.8,
+    "reviewCount": 890,
+    "image": "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=800&q=80",
+    "images": [
+      "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=800&q=80"
+    ],
+    "badge": "Best Seller",
+    "stock": 45,
+    "specs": {
+      "processor": "Dual Processor V1 & QN1",
+      "battery": "30 hours (3 min charge = 3 hours playback)",
+      "weight": "250 grams",
+      "warranty": "1 Year Manufacturer Warranty",
+      "connectivity": "Bluetooth 5.2, LDAC, 3.5mm jack"
+    },
+    "highlights": [
+      "8-microphone active noise cancellation",
+      "LDAC High-Resolution Wireless Audio",
+      "Speak-to-Chat auto pause voice sensing"
+    ],
+    "description": "World-renowned noise canceling headphones with 30-hour battery life.",
+    "pros": [
+      "Market leading active noise cancellation",
+      "30-hour battery",
+      "Ultra lightweight comfort"
+    ],
+    "cons": [
+      "Earcups do not fold into ball shape"
+    ],
+    "releaseDate": "2022-05-20",
+    "performanceScore": 9.7,
+    "featuresScore": 9.6,
+    "valueScore": 9.4,
+    "recommendedUseCases": [
+      "Travel & Noise Isolation",
+      "Studio Music & Calls",
+      "Daily Commute"
+    ]
+  },
+  {
+    "id": "audio-2",
+    "name": "Bose QuietComfort Ultra Earbuds",
+    "brand": "Bose",
+    "category": "audio",
+    "price": 24900,
+    "originalPrice": 27900,
+    "rating": 4.65,
+    "reviewCount": 220,
+    "image": "https://images.unsplash.com/photo-1590658268037-6bf12165a8df?auto=format&fit=crop&w=800&q=80",
+    "images": [
+      "https://images.unsplash.com/photo-1590658268037-6bf12165a8df?auto=format&fit=crop&w=800&q=80"
+    ],
+    "badge": "Sale",
+    "stock": 28,
+    "specs": {
+      "battery": "6 hours earbud + 18 hours case",
+      "weight": "6.2 grams per bud",
+      "warranty": "1 Year Bose Warranty",
+      "connectivity": "Bluetooth 5.3, AptX Adaptive",
+      "waterResistance": "IPX4 Water Resistant"
+    },
+    "highlights": [
+      "Bose Immersive Spatial Audio mode",
+      "CustomTune acoustic ear calibration",
+      "Includes 9 fit band combinations"
+    ],
+    "description": "In-ear active noise cancellation redefined with spatialized immersive audio.",
+    "pros": [
+      "Best in-ear noise cancellation",
+      "CustomTune personalization",
+      "Comfortable fit"
+    ],
+    "cons": [
+      "Case lacks wireless charging out of box"
+    ],
+    "releaseDate": "2023-10-15",
+    "performanceScore": 9.4,
+    "featuresScore": 9.3,
+    "valueScore": 9.2,
+    "recommendedUseCases": [
+      "Travel & Noise Isolation",
+      "Gym & Workout",
+      "Daily Commute"
+    ]
+  },
+  {
+    "id": "wearable-1",
+    "name": "Apple Watch Ultra 2 Titanium",
+    "brand": "Apple",
+    "category": "wearables",
+    "price": 89900,
+    "originalPrice": 89900,
+    "rating": 4.9,
+    "reviewCount": 640,
+    "image": "https://images.unsplash.com/photo-1508685096489-7aacd43bd3b1?auto=format&fit=crop&w=800&q=80",
+    "images": [
+      "https://images.unsplash.com/photo-1508685096489-7aacd43bd3b1?auto=format&fit=crop&w=800&q=80"
+    ],
+    "badge": "Editor's Choice",
+    "stock": 16,
+    "specs": {
+      "display": "49mm Always-On Retina Sapphire Crystal (3000 nits)",
+      "processor": "Apple S9 SiP",
+      "battery": "36 hours normal (72 hours Low Power Mode)",
+      "warranty": "1 Year AppleCare",
+      "connectivity": "Cellular LTE, Dual-freq L1/L5 GPS",
+      "waterResistance": "100m Water Resistant, EN13319 certified"
+    },
+    "highlights": [
+      "Double Tap finger pinch gesture control",
+      "Precision dual-frequency GPS for trail mapping",
+      "Oceanic+ dive computer integration"
+    ],
+    "description": "Aerospace-grade 49mm titanium smartwatch with 3000 nit display.",
+    "pros": [
+      "Indestructible titanium & sapphire",
+      "3000 nit sunlight readability",
+      "Dual-frequency GPS"
+    ],
+    "cons": [
+      "Large 49mm size"
+    ],
+    "releaseDate": "2023-09-22",
+    "performanceScore": 9.8,
+    "featuresScore": 9.9,
+    "valueScore": 9.1,
+    "recommendedUseCases": [
+      "Fitness & Extreme Sports",
+      "Scuba Diving & Hiking",
+      "Executive Luxury"
+    ]
+  },
+  {
+    "id": "gaming-1",
+    "name": "PlayStation 5 Pro Console",
+    "brand": "Sony",
+    "category": "gaming",
+    "price": 69900,
+    "originalPrice": 69900,
+    "rating": 4.85,
+    "reviewCount": 710,
+    "image": "https://images.unsplash.com/photo-1606813907291-d86efa9b94db?auto=format&fit=crop&w=800&q=80",
+    "images": [
+      "https://images.unsplash.com/photo-1606813907291-d86efa9b94db?auto=format&fit=crop&w=800&q=80"
+    ],
+    "badge": "Best Seller",
+    "stock": 7,
+    "specs": {
+      "processor": "AMD Zen 2 + RDNA 3 Pro GPU (16.7 TFLOPS)",
+      "ram": "16 GB GDDR6",
+      "storage": "2 TB Custom PCIe Gen4 NVMe SSD",
+      "warranty": "1 Year Sony India Warranty",
+      "connectivity": "Wi-Fi 7, HDMI 2.1"
+    },
+    "highlights": [
+      "PSSR AI Upscaling",
+      "67% more Compute Units for 45% faster rendering",
+      "2TB high speed SSD standard"
+    ],
+    "description": "The most powerful PlayStation console ever built with PSSR AI resolution upscaling.",
+    "pros": [
+      "4K 60fps Ray Tracing",
+      "Huge 2TB SSD standard",
+      "Wi-Fi 7 low latency"
+    ],
+    "cons": [
+      "Disc drive sold separately"
+    ],
+    "releaseDate": "2024-11-07",
+    "performanceScore": 9.9,
+    "featuresScore": 9.6,
+    "valueScore": 9.3,
+    "recommendedUseCases": [
+      "Heavy Gaming",
+      "4K Cinema & TV",
+      "Living Room Console"
+    ]
+  },
+  {
+    "id": "camera-1",
+    "name": "Sony Alpha A7 IV Mirrorless",
+    "brand": "Sony",
+    "category": "cameras",
+    "price": 242900,
+    "originalPrice": 264900,
+    "rating": 4.92,
+    "reviewCount": 380,
+    "image": "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&w=800&q=80",
+    "images": [
+      "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&w=800&q=80"
+    ],
+    "badge": "Editor's Choice",
+    "stock": 9,
+    "specs": {
+      "display": "3.0\" Vari-Angle Touch LCD",
+      "processor": "BIONZ XR Image Processor",
+      "camera": "33MP Full-Frame Exmor R CMOS Sensor",
+      "battery": "NP-FZ100 (Approx 600 shots)",
+      "warranty": "2 Year Sony India Warranty"
+    },
+    "highlights": [
+      "33MP full-frame sensor with 15+ stops dynamic range",
+      "Real-time Eye AF for Humans and Animals",
+      "4K 60p 10-bit video capture"
+    ],
+    "description": "Benchmark hybrid full-frame camera delivering 33MP still photo resolution and 4K 60p video.",
+    "pros": [
+      "33MP hybrid photo & video quality",
+      "Industry-best AF tracking",
+      "Vari-angle screen"
+    ],
+    "cons": [
+      "4K 60p Super35 crop"
+    ],
+    "releaseDate": "2021-12-23",
+    "performanceScore": 9.8,
+    "featuresScore": 9.7,
+    "valueScore": 9.1,
+    "recommendedUseCases": [
+      "4K Video & Photography",
+      "Professional Studio",
+      "Vlogging & Content Creation"
+    ]
+  }
+]

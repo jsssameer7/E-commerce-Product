@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { User } from '../types';
-import { DEMO_USERS } from '../data/users';
+import { api } from '../lib/api';
 import { 
   X, 
   UserCheck, 
@@ -9,7 +9,6 @@ import {
   User as UserIcon, 
   Eye, 
   EyeOff, 
-  Sparkles, 
   ArrowRight,
   CheckCircle2
 } from 'lucide-react';
@@ -41,57 +40,32 @@ export const AuthContent: React.FC<AuthContentProps> = ({
 
   const [errorMessage, setErrorMessage] = useState('');
 
-  const handleLoginSubmit = (e: React.FormEvent) => {
+  const handleLoginSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMessage('');
-
-    // Check existing demo users
-    const matched = DEMO_USERS.find(
-      (u) => u.email.toLowerCase() === email.trim().toLowerCase()
-    );
-
-    if (matched) {
-      onLoginSuccess(matched);
+    try {
+      const result = await api.login({ email: email.trim(), password });
+      sessionStorage.setItem('electro_api_token', result.token);
+      const loggedInUser: User = { ...result.user, avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80' };
+      onLoginSuccess(loggedInUser);
       if (onClose) onClose();
-      return;
+    } catch (error) {
+      setErrorMessage(error instanceof Error ? error.message : 'Unable to sign in. Check the API server.');
     }
-
-    // Dynamic user creation if email isn't demo
-    const dynamicUser: User = {
-      id: 'user-' + Date.now(),
-      name: email.split('@')[0] || 'Registered User',
-      email: email,
-      role: 'customer',
-      avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80',
-      city: 'Mumbai',
-      zipCode: '400001',
-    };
-
-    onLoginSuccess(dynamicUser);
-    if (onClose) onClose();
   };
 
-  const handleRegisterSubmit = (e: React.FormEvent) => {
+  const handleRegisterSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!regName || !regEmail || !regPassword) return;
-
-    const newUser: User = {
-      id: 'user-' + Date.now(),
-      name: regName,
-      email: regEmail,
-      role: 'customer',
-      avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80',
-      city: regCity,
-      zipCode: regZipCode,
-    };
-
-    onLoginSuccess(newUser);
-    if (onClose) onClose();
-  };
-
-  const handleQuickDemoLogin = (demoUser: User) => {
-    onLoginSuccess(demoUser);
-    if (onClose) onClose();
+    setErrorMessage('');
+    try {
+      const result = await api.register({ name: regName.trim(), email: regEmail.trim(), password: regPassword });
+      sessionStorage.setItem('electro_api_token', result.token);
+      const newUser: User = { ...result.user, avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80', city: regCity, zipCode: regZipCode };
+      onLoginSuccess(newUser);
+      if (onClose) onClose();
+    } catch (error) {
+      setErrorMessage(error instanceof Error ? error.message : 'Unable to create account. Check the API server.');
+    }
   };
 
   return (
@@ -139,38 +113,6 @@ export const AuthContent: React.FC<AuthContentProps> = ({
       {/* Body Content */}
       <div className="p-6 space-y-5 overflow-y-auto">
         
-        {/* Quick Demo Login Preset Buttons */}
-        <div className="p-3 bg-blue-50/70 dark:bg-blue-950/40 rounded-2xl border border-blue-200 dark:border-blue-900 space-y-2">
-          <p className="text-[11px] font-extrabold uppercase text-blue-900 dark:text-blue-200 tracking-wider flex items-center gap-1">
-            <Sparkles className="w-3.5 h-3.5 text-amber-500" /> 1-Click Quick Demo Accounts:
-          </p>
-          <div className="grid grid-cols-2 gap-2">
-            <button
-              type="button"
-              onClick={() => handleQuickDemoLogin(DEMO_USERS[0])}
-              className="p-2 bg-white dark:bg-gray-800 text-gray-900 dark:text-white rounded-xl text-xs font-bold border border-gray-200 dark:border-gray-700 hover:border-blue-500 hover:scale-105 transition-all text-left flex items-center gap-2 shadow-sm"
-            >
-              <img src={DEMO_USERS[0].avatar} alt="" className="w-7 h-7 rounded-full object-cover" />
-              <div className="min-w-0">
-                <p className="font-extrabold truncate text-[11px]">Customer</p>
-                <p className="text-[9px] text-gray-400 truncate">Rajesh Sharma</p>
-              </div>
-            </button>
-
-            <button
-              type="button"
-              onClick={() => handleQuickDemoLogin(DEMO_USERS[1])}
-              className="p-2 bg-white dark:bg-gray-800 text-gray-900 dark:text-white rounded-xl text-xs font-bold border border-gray-200 dark:border-gray-700 hover:border-indigo-500 hover:scale-105 transition-all text-left flex items-center gap-2 shadow-sm"
-            >
-              <img src={DEMO_USERS[1].avatar} alt="" className="w-7 h-7 rounded-full object-cover" />
-              <div className="min-w-0">
-                <p className="font-extrabold truncate text-[11px] text-indigo-600 dark:text-indigo-400">Seller Admin</p>
-                <p className="text-[9px] text-gray-400 truncate">Admin Account</p>
-              </div>
-            </button>
-          </div>
-        </div>
-
         {/* LOGIN FORM */}
         {activeTab === 'login' && (
           <form onSubmit={handleLoginSubmit} className="space-y-4">
@@ -306,26 +248,6 @@ export const AuthContent: React.FC<AuthContentProps> = ({
           </form>
         )}
 
-        {/* Social OAuth Mock Buttons */}
-        <div className="pt-3 border-t border-gray-200 dark:border-gray-800 text-center">
-          <p className="text-[11px] text-gray-400 mb-2 font-medium">Or quick sign in with social account:</p>
-          <div className="grid grid-cols-2 gap-2">
-            <button
-              type="button"
-              onClick={() => handleQuickDemoLogin(DEMO_USERS[0])}
-              className="py-2 px-3 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-xl text-xs font-bold text-gray-800 dark:text-gray-200 flex items-center justify-center gap-1.5 transition-colors"
-            >
-              <span>Google</span>
-            </button>
-            <button
-              type="button"
-              onClick={() => handleQuickDemoLogin(DEMO_USERS[1])}
-              className="py-2 px-3 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-xl text-xs font-bold text-gray-800 dark:text-gray-200 flex items-center justify-center gap-1.5 transition-colors"
-            >
-              <span>GitHub</span>
-            </button>
-          </div>
-        </div>
 
       </div>
     </div>
