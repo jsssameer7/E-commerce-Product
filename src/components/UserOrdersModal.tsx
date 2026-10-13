@@ -21,20 +21,19 @@ export const UserOrdersModal: React.FC<UserOrdersModalProps> = ({
 
   if (!isOpen) return null;
 
-  // Strict Order Isolation logic
+  // Strict Order Isolation: customer sees ONLY their own orders
   const userOrders = orders.filter((order) => {
     if (!currentUser) return false;
 
     const isOwnOrder = 
-      order.userId === currentUser.id ||
-      (order.userEmail && order.userEmail.toLowerCase() === currentUser.email.toLowerCase()) ||
-      (order.shippingAddress?.email && order.shippingAddress.email.toLowerCase() === currentUser.email.toLowerCase());
+      (order.userId && order.userId === currentUser.id) ||
+      (Boolean(order.userEmail) && Boolean(currentUser.email) && order.userEmail?.toLowerCase() === currentUser.email?.toLowerCase());
 
     if (currentUser.role === 'admin') {
       return adminViewMode === 'all-orders' ? true : isOwnOrder;
     }
 
-    // Regular customers see ONLY their own orders
+    // Regular customers see strictly their own verified orders
     return isOwnOrder;
   });
 

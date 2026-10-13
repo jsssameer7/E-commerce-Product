@@ -36,16 +36,31 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
 }) => {
   const [step, setStep] = useState<1 | 2 | 3 | 4>(1);
 
-  // Form State
-  const [address, setAddress] = useState<ShippingAddress>({
-    fullName: 'Rajesh Sharma',
-    email: 'rajesh.sharma@example.in',
-    address: '42 Marine Drive, Nariman Point',
-    city: 'Mumbai',
+  // Form State dynamically populated from currentUser
+  const [address, setAddress] = useState<ShippingAddress>(() => ({
+    fullName: currentUser?.name || 'Customer Shopper',
+    email: currentUser?.email || 'customer@example.in',
+    address: currentUser?.address || '42 Marine Drive, Nariman Point',
+    city: currentUser?.city || 'Mumbai',
     state: 'Maharashtra',
-    zipCode: '400001',
+    zipCode: currentUser?.zipCode || '400001',
     country: 'India',
-  });
+  }));
+
+  React.useEffect(() => {
+    if (currentUser) {
+      setAddress({
+        fullName: currentUser.name || 'Customer Shopper',
+        email: currentUser.email || 'customer@example.in',
+        address: currentUser.address || '42 Marine Drive, Nariman Point',
+        city: currentUser.city || 'Mumbai',
+        state: 'Maharashtra',
+        zipCode: currentUser.zipCode || '400001',
+        country: 'India',
+      });
+      setUpiId(currentUser.email ? currentUser.email.split('@')[0] + '@okaxis' : 'user@okaxis');
+    }
+  }, [currentUser]);
 
   const [shippingMethod, setShippingMethod] = useState<'standard' | 'express' | 'overnight'>('express');
   const [paymentMethod, setPaymentMethod] = useState<'upi' | 'card' | 'netbanking' | 'cod'>('upi');
@@ -54,7 +69,7 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
   const [cardNumber, setCardNumber] = useState('4532 8901 2345 6789');
   const [cardExpiry, setCardExpiry] = useState('08/28');
   const [cardCvc, setCardCvc] = useState('321');
-  const [upiId, setUpiId] = useState('rajesh@okaxis');
+  const [upiId, setUpiId] = useState(currentUser?.email ? currentUser.email.split('@')[0] + '@okaxis' : 'customer@okaxis');
 
   // Generated Order state
   const [confirmedOrder, setConfirmedOrder] = useState<Order | null>(null);
