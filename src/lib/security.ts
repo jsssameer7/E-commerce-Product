@@ -62,14 +62,12 @@ export function checkRateLimit(key: string, limit = 10, windowMs = 60000): { all
   return { allowed: true, remaining: limit - record.count };
 }
 
-// 5. Razorpay Signature & Payment Status Verification
+// Payment verification must only happen on the trusted Express server.
+// This client helper intentionally fails closed; never mark an order paid in the browser.
 export function verifyRazorpayPayment(
-  razorpayOrderId: string,
-  razorpayPaymentId: string,
-  razorpaySignature: string
+  _razorpayOrderId: string,
+  _razorpayPaymentId: string,
+  _razorpaySignature: string
 ): { success: boolean; status: string } {
-  if (!razorpayOrderId || !razorpayPaymentId || !razorpaySignature) {
-    return { success: false, status: 'Invalid Signature Payload' };
-  }
-  return { success: true, status: 'PAID & VERIFIED (Razorpay Webhook)' };
+  return { success: false, status: 'Server-side verification required' };
 }

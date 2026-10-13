@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { User } from '../types';
 import { DEMO_USERS } from '../data/users';
+import { api } from '../lib/api';
 import { 
   X, 
   UserCheck, 
@@ -9,10 +10,10 @@ import {
   User as UserIcon, 
   Eye, 
   EyeOff, 
-  Sparkles, 
   ArrowRight,
   CheckCircle2,
-  Compass
+  Compass,
+  Sparkles
 } from 'lucide-react';
 
 interface StoredAccount extends User {
@@ -66,12 +67,24 @@ export const AuthContent: React.FC<AuthContentProps> = ({
 
   const [errorMessage, setErrorMessage] = useState('');
 
-  const handleLoginSubmit = (e: React.FormEvent) => {
+  const handleLoginSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMessage('');
     const cleanEmail = email.trim().toLowerCase();
 
-    // 1. Check existing demo users
+    // 1. Try server API authentication if server is online
+    try {
+      const result = await api.login({ email: email.trim(), password });
+      sessionStorage.setItem('electro_api_token', result.token);
+      const loggedInUser: User = { ...result.user, avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80' };
+      onLoginSuccess(loggedInUser);
+      if (onClose) onClose();
+      return;
+    } catch {
+      // API unavailable or offline: fall back cleanly to demo accounts and local accounts
+    }
+
+    // 2. Check existing demo users
     const demoMatch = DEMO_USERS.find(
       (u) => u.email.toLowerCase() === cleanEmail
     );
@@ -81,7 +94,7 @@ export const AuthContent: React.FC<AuthContentProps> = ({
       return;
     }
 
-    // 2. Check registered accounts in localStorage
+    // 3. Check registered accounts in localStorage
     const storedUsers = getStoredUsers();
     const storedMatch = storedUsers.find(
       (u) => u.email.toLowerCase() === cleanEmail
@@ -97,7 +110,7 @@ export const AuthContent: React.FC<AuthContentProps> = ({
       return;
     }
 
-    // 3. If new email, automatically create account and sign in
+    // 4. If new email entered directly on login, automatically create account
     const isAdmin = cleanEmail.includes('admin') || cleanEmail.includes('seller');
     const newDynamicUser: StoredAccount = {
       id: 'user-' + cleanEmail.replace(/[^a-z0-9]/g, '-'),
@@ -117,7 +130,7 @@ export const AuthContent: React.FC<AuthContentProps> = ({
     if (onClose) onClose();
   };
 
-  const handleRegisterSubmit = (e: React.FormEvent) => {
+  const handleRegisterSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMessage('');
     if (!regName.trim() || !regEmail.trim() || !regPassword) {
@@ -126,8 +139,20 @@ export const AuthContent: React.FC<AuthContentProps> = ({
     }
 
     const cleanEmail = regEmail.trim().toLowerCase();
-    const storedUsers = getStoredUsers();
 
+    // 1. Try server API registration if server is running
+    try {
+      const result = await api.register({ name: regName.trim(), email: regEmail.trim(), password: regPassword });
+      sessionStorage.setItem('electro_api_token', result.token);
+      const newUser: User = { ...result.user, avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80', city: regCity, zipCode: regZipCode };
+      onLoginSuccess(newUser);
+      if (onClose) onClose();
+      return;
+    } catch {
+      // Server not connected: persist in client storage
+    }
+
+    const storedUsers = getStoredUsers();
     if (storedUsers.some((u) => u.email.toLowerCase() === cleanEmail) || DEMO_USERS.some((u) => u.email.toLowerCase() === cleanEmail)) {
       setErrorMessage('An account with this email already exists. Please Sign In.');
       return;
@@ -232,7 +257,6 @@ export const AuthContent: React.FC<AuthContentProps> = ({
             </button>
           </div>
         </div>
-
         {/* LOGIN FORM */}
         {activeTab === 'login' && (
           <form onSubmit={handleLoginSubmit} className="space-y-4">
@@ -383,7 +407,6 @@ export const AuthContent: React.FC<AuthContentProps> = ({
             </button>
           </form>
         )}
-
         {/* Continue as Guest option */}
         {onContinueAsGuest && (
           <div className="pt-3 border-t border-gray-200 dark:border-gray-800 text-center">
