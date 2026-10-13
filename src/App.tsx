@@ -289,6 +289,31 @@ export const App: React.FC = () => {
     showToast(`Added ${newProduct.name}. Saving to the connected catalog when authorized.`);
   };
 
+  // Seller / Admin Order Delivery Status Updater
+  const handleUpdateOrderStatus = (
+    orderId: string, 
+    newStatus: Order['status'], 
+    newTrackingNumber?: string, 
+    newEstimatedDelivery?: string
+  ) => {
+    setOrders((prev) => {
+      const updated = prev.map((order) => {
+        if (order.id === orderId) {
+          return {
+            ...order,
+            status: newStatus,
+            trackingNumber: newTrackingNumber !== undefined && newTrackingNumber.trim() ? newTrackingNumber.trim() : order.trackingNumber,
+            estimatedDelivery: newEstimatedDelivery !== undefined && newEstimatedDelivery.trim() ? newEstimatedDelivery.trim() : order.estimatedDelivery,
+          };
+        }
+        return order;
+      });
+      localStorage.setItem('electro_orders', JSON.stringify(updated));
+      return updated;
+    });
+    showToast(`Order ${orderId} status set to "${newStatus}"!`);
+  };
+
   // Filter products pipeline
   const filteredProducts = useMemo(() => {
     return products
@@ -715,6 +740,7 @@ export const App: React.FC = () => {
         onClose={() => setIsOrdersModalOpen(false)}
         orders={orders}
         currentUser={currentUser}
+        onUpdateOrderStatus={handleUpdateOrderStatus}
       />
 
       <AdminPanelModal
@@ -723,6 +749,8 @@ export const App: React.FC = () => {
         products={products}
         onAddProduct={handleAddProduct}
         onUpdateStock={handleUpdateStock}
+        orders={orders}
+        onUpdateOrderStatus={handleUpdateOrderStatus}
       />
 
       <ShoppingAssistant />
